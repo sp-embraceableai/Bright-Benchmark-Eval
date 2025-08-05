@@ -207,4 +207,4 @@ This project is licensed under the MIT License.
 
 - BRIGHT benchmark: https://huggingface.co/datasets/xlangai/BRIGHT
 - MTEB framework: https://github.com/embeddings-benchmark/mteb
-- Sentence Transformers: https://github.com/UKPLab/sentence-transformers 
+- Sentence Transformers: https://github.com/UKPLab/sentence-transformers
