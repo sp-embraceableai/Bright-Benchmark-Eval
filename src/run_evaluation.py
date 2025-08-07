@@ -87,6 +87,10 @@ def interactive_mode():
     print_banner()
     print_available_options()
     
+    # Get retriever and reranker models
+    retriever_model = input(f"Retriever model [default: {DEFAULT_SETTINGS['model_name']}]: ").strip() or DEFAULT_SETTINGS['model_name']
+    reranker_model = input("Reranker model (optional, leave blank to skip): ").strip() or None
+    
     # Get domain
     domain = get_user_choice(
         AVAILABLE_DOMAINS, 
@@ -145,13 +149,13 @@ def interactive_mode():
         return
     
     # Run evaluation
-    run_evaluation(domain, config, num_samples, candidate_pool_size, top_k, output_dir)
+    run_evaluation(domain, config, num_samples, candidate_pool_size, top_k, output_dir, retriever_model, reranker_model)
 
-def run_evaluation(domain, config, num_samples, candidate_pool_size, top_k, output_dir):
+def run_evaluation(domain, config, num_samples, candidate_pool_size, top_k, output_dir, retriever_model=None, reranker_model=None):
     """Run the evaluation with specified parameters"""
     try:
         # Initialize evaluator
-        evaluator = BrightEvaluator()
+        evaluator = BrightEvaluator(retriever_model_name=retriever_model, reranker_model_name=reranker_model)
         
         # Run evaluation
         results = evaluator.run_evaluation(
@@ -231,6 +235,17 @@ Examples:
     )
     
     parser.add_argument(
+        "--retriever-model",
+        default=DEFAULT_SETTINGS['model_name'],
+        help="Retriever model name (bi-encoder)"
+    )
+    parser.add_argument(
+        "--reranker-model",
+        default=None,
+        help="Reranker model name (cross-encoder or reranker, optional)"
+    )
+    
+    parser.add_argument(
         "--list-options",
         action="store_true",
         help="List available domains and configurations"
@@ -265,7 +280,9 @@ Examples:
             args.samples,
             args.pool_size,
             args.top_k,
-            args.output_dir
+            args.output_dir,
+            args.retriever_model,
+            args.reranker_model
         )
 
 if __name__ == "__main__":

@@ -5,7 +5,7 @@ Configuration file for BRIGHT benchmark evaluation
 # Model configuration
 MODEL_CONFIG = {
     "model_name": "sp-embraceable/Colbert-Reranker-FT-2000steps",
-    "batch_size": 4,
+    "batch_size": 1,  # Reduced for faster processing
     "device": "auto"  # "auto", "cuda", "cpu"
 }
 
@@ -42,7 +42,7 @@ DEFAULT_SETTINGS = {
     "domain": "biology",
     "config": "examples",
     "num_samples": 10,
-    "candidate_pool_size": 1000,
+    "candidate_pool_size": 100,  # Reduced for faster processing
     "top_k": 10,
     "output_dir": "evaluation_results"
 }

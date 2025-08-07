@@ -32,9 +32,13 @@ def main():
         if len(sys.argv) >= 3:
             domain = sys.argv[2]
             num_samples = int(sys.argv[3]) if len(sys.argv) > 3 else 5
+            retriever_model = sys.argv[4] if len(sys.argv) > 4 else None
+            reranker_model = sys.argv[5] if len(sys.argv) > 5 else None
         else:
             domain = "biology"
             num_samples = 5
+            retriever_model = None
+            reranker_model = None
             
         if domain not in AVAILABLE_DOMAINS:
             print(f"❌ Invalid domain: {domain}")
@@ -42,7 +46,7 @@ def main():
             return
             
         print(f"🚀 Quick test: {domain} domain with {num_samples} samples")
-        quick_test(domain, num_samples)
+        quick_test(domain, num_samples, retriever_model, reranker_model)
         return
     
     # Check for help command
@@ -65,7 +69,7 @@ def print_help():
     print()
     print("USAGE:")
     print("  python main.py                    # Interactive mode")
-    print("  python main.py quick [domain] [samples]  # Quick test")
+    print("  python main.py quick [domain] [samples] [retriever_model] [reranker_model]  # Quick test with two models")
     print("  python main.py --domain biology --samples 10  # Command line mode")
     print("  python main.py --list             # List available options")
     print("  python main.py --help             # Show this help")
@@ -76,6 +80,9 @@ def print_help():
     print()
     print("  # Quick test with 5 samples")
     print("  python main.py quick biology 5")
+    print()
+    print("  # Quick test with two models")
+    print("  python main.py quick biology 5 'retriever-model-name' 'reranker-model-name'")
     print()
     print("  # Full evaluation")
     print("  python main.py --domain biology --config examples --samples 20")
